@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #map{
+        width:auto;
+        height:640px;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <meta charset="UTF-8">
+</head>
+<body>
+   <div id="map" class="container-fluid">
+
+   </div>
+
+</body>
+
+<script>
+    var map = L.map('map').setView([-8.1221,115.1065],14);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    L.marker([-8.1152,115.0838]).addTo(map);
+
+    var drawItems = new L.FeatureGroup();
+
+    map.addLayer(drawItems);
+
+    var drawControl = new L.Control.Draw({
+        dra:{
+            marker: false,
+            rectangle: false,
+            circle: false,
+            circlemarker: false
+        },
+        edit: {
+            featureGroup : drawItems
+        }
+
+    });
+
+    map.addControl(drawControl);
+
+    map.on(L.Draw.Event.CREATED, function(e){
+        var type = e.layerType,
+        layer = e.layer;
+
+        console.log(layer._latlngs);
+        map.addLayer(layer);
+    });
+    var polylinePoints = [
+    [-8.104268103888606, 115.08340967072988],
+    [-8.11990292595328, 115.09190466660012],
+    [-8.119308134070586, 115.07585856328969],
+    [-8.103503341562606, 115.08426775112083]
+];
+
+var polyline = L.polyline(polylinePoints).addTo(map);
+
+var polygon_ltlng = [
+    [
+        [
+            -8.1126803935109,
+            115.13266348516937
+        ],
+        [
+            -8.106477409109372,
+            115.13120474850477
+        ],
+        [
+            -8.098744787771158,
+            115.14047201672685
+        ],
+        [
+            -8.112850336942111,
+            115.13386479771667
+        ]
+    ]
+];
+
+var polygon = L.polygon(polygon_ltlng, { color: "green" }).addTo(map);
+
+</script>
+</html>
